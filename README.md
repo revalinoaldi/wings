@@ -9,6 +9,7 @@
 -   in terminal > composer install
 -   in terminal > php artisan key:generate --ansi
 -   in terminal > php artisan migrate
+-   in terminal > php artisan storage:link
 -   in terminal > php artisan config:cache
 -   in terminal > php artisan route:cache
 -   in terminal > php artisan serve
