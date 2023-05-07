@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Produk;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
@@ -68,7 +69,7 @@ class OrderController extends Controller
      */
     public function edit(Transaksi $transaksi)
     {
-        
+
     }
 
     /**
@@ -88,6 +89,8 @@ class OrderController extends Controller
         $valid['status_transaksi'] = (string)$valid['status_transaksi'];
         $is_success = Transaksi::where('id', $order->id)->update($valid);
         if ($is_success) {
+            $this->_altTrigger($valid['status_transaksi'], $order);
+
             return redirect('/admin/order')->with('notif','
             <div class="alert alert-success alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
@@ -102,6 +105,29 @@ class OrderController extends Controller
                 Data Transaksi Gagal di Update ke Record, silahkan periksa kembali!
             </div>');
         }
+    }
+
+    private function _altTrigger($status, $transaksi)
+    {
+        // Change status cancel to confirm -> restock qty product form cancel to confirm (-qty)
+        if($status == "1" && $transaksi->status_transaksi == "2"){
+            foreach ($transaksi->detail_transaksi as $detail) {
+                $data = [
+                    'stok' => $detail->produk->stok - $detail->qty
+                ];
+                Produk::where('kode_produk',$detail->produk->kode_produk)->update($data);
+            }
+        }
+        // Change status waiting to cancel -> restock qty product form waiting to cancel (+qty)
+        elseif ($status == "2" && $transaksi->status_transaksi == "0") {
+            foreach ($transaksi->detail_transaksi as $detail) {
+                $data = [
+                    'stok' => $detail->produk->stok + $detail->qty
+                ];
+                Produk::where('kode_produk',$detail->produk->kode_produk)->update($data);
+            }
+        }
+
     }
 
     /**

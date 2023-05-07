@@ -66,24 +66,6 @@
 
                             <div class="clearfix"></div>
                         </div><!-- /.flat-row-title style4 -->
-                        <div class="sort-product style1">
-                            <ul class="icons">
-                                <li>
-                                    <img src="/frontend/images/icons/list-1.png" alt="">
-                                </li>
-                            </ul><!-- /.icons -->
-                            <div class="sort">
-                                <div class="popularity">
-                                    <select name="popularity">
-                                        <option value="">All Categories</option>
-                                        @foreach ($config['menu']['menuSide'] as $menu)
-                                        <option value="{{ $menu->slug }}">{{ $menu->kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div><!-- /.sort -->
-                            <div class="clearfix"></div>
-                        </div><!-- /.sort-product style1 -->
                         <div class="row">
                             @foreach ($produks as $produk)
 

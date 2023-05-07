@@ -23,6 +23,13 @@
         <div class="col-xs-12">
             <h2 class="page-header">
                 <i class="fa fa-globe"></i> AdminLTE, Inc.
+                @if ($order->status_transaksi == 2)
+                      <span class="badge bg-red">Cancel</span>
+                  @elseif ($order->status_transaksi == 1)
+                    <span class="badge bg-green">Confirm</span>
+                  @else
+                    <span class="badge bg-blue">Waiting</span>
+                  @endif
                 <small class="pull-right">Date: {{ date('d/M/Y') }}</small>
             </h2>
         </div>
@@ -54,13 +61,13 @@
         <div class="col-sm-4 invoice-col">
             <b>Invoice #{{ $order->kode_transaksi }}</b><br>
             <br>
-            <b>Payment Due:</b> {{ date('d/M/Y H:i:s', strtotime($order->transaksi_pembayaran->tanggal_pembayaran)) }}<br>
-            <b>Account:</b> {{ $order->transaksi_pembayaran->rekening_pembayaran }}
+            <b>Payment Due:</b> {{ @$order->transaksi_pembayaran->tanggal_pembayaran ? date('d/M/Y H:i:s', strtotime($order->transaksi_pembayaran->tanggal_pembayaran)) : '-' }}<br>
+            <b>Account:</b> {{ @$order->transaksi_pembayaran->rekening_pembayaran ?? '-' }}
         </div>
         <!-- /.col -->
     </div>
     <!-- /.row -->
-    
+
     <!-- Table row -->
     <div class="row">
         <div class="col-xs-12 table-responsive">
@@ -77,7 +84,7 @@
                 <tbody>
                     <?php $subtotal = 0; ?>
                     @foreach ($order->detail_transaksi as $detail)
-                        
+
                     <tr>
                         <td>{{ $detail->qty.' '.$detail->satuan }}</td>
                         <td>{{ $detail->produk->nama_produk }}</td>
@@ -94,19 +101,19 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
-    
+
     <div class="row">
         <!-- accepted payments column -->
         <div class="col-xs-6 mb-3">
             <p class="lead">Bukti Bayar:</p>
-            <a href="{{ asset('storage/' . $order->transaksi_pembayaran->bukti_pembayaran) }}" target="_blank">
-                <img src="{{ asset('storage/' . $order->transaksi_pembayaran->bukti_pembayaran) }}" alt="Visa" class="img-thumbnail img-responsive col-sm-7">
+            <a href="{{ @$order->transaksi_pembayaran->bukti_pembayaran ? asset('storage/' . $order->transaksi_pembayaran->bukti_pembayaran) : '' }}" target="_blank">
+                <img src="{{ @$order->transaksi_pembayaran->bukti_pembayaran ? asset('storage/' . $order->transaksi_pembayaran->bukti_pembayaran) : '' }}" alt="Bukti Pembayaran" class="img-thumbnail img-responsive col-sm-7">
             </a>
         </div>
         <!-- /.col -->
         <div class="col-xs-6">
             {{-- <p class="lead">Amount Due 2/22/2014</p> --}}
-            
+
             <div class="table-responsive">
                 <table class="table">
                     <tr>
@@ -123,7 +130,7 @@
         <!-- /.col -->
     </div>
     <!-- /.row -->
-    
+
     <!-- this row will not appear when printing -->
     <div class="row no-print">
         <div class="col-xs-12">
@@ -134,17 +141,17 @@
                 <input type="hidden" value="2" name="status_transaksi">
                 <button onclick="return confirm('Yakin cancel proses order?')" class="btn btn-danger pull-right"> Cancel Order</button>
             </form>
-            
+
             <form action="/admin/order/{{ $order->kode_transaksi }}" method="POST">
                 @method('put')
                 @csrf
                 <input type="hidden" value="1" name="status_transaksi">
-                <button onclick="return confirm('Yakin confirm proses order?')" class="btn btn-success pull-right" style="margin-right: 5px;">
+                <button onclick="return confirm('Yakin confirm proses order?')" @if (!@$order->transaksi_pembayaran) disabled @endif class="btn btn-success pull-right" style="margin-right: 5px;">
                     <i class="fa fa-credit-card"></i> Confirm Order
                 </button>
             </form>
-            
-            
+
+
         </div>
     </div>
 </section>

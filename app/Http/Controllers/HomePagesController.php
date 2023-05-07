@@ -22,7 +22,7 @@ class HomePagesController extends Controller
             return redirect()->route('dashboard-admin');
         }
 
-        $this->forHeader['menuSide'] = Kategori::all();
+        $this->forHeader['menuSide'] = Kategori::where('deleted_at', NULL)->get();
         $this->forHeader['menuCenter'] = Kategori::limit(6)->get();
     }
 

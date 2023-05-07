@@ -46,6 +46,8 @@
                 <th>Tanggal Transaksi</th>
                 <th>Total Transaksi</th>
                 <th>Transfer</th>
+                <th>Tgl Transfer</th>
+
                 <th>Status</th>
                 <th>Item</th>
 
@@ -61,7 +63,8 @@
                 <td>{{ $trans->alamat }}</td>
                 <td>{{ date('d F Y H:i:s', strtotime($trans->tanggal_transaksi)) }}</td>
                 <td>Rp{{ number_format($trans->total_transaksi, 0, ',','.') }}</td>
-                <td>{{ $trans->transaksi_pembayaran->rekening_pembayaran }}</td>
+                <td>{{ @$trans->transaksi_pembayaran->rekening_pembayaran ?? ' - ' }}</td>
+                <td>{{ @$trans->transaksi_pembayaran->tanggal_pembayaran ? \Carbon\Carbon::parse($trans->transaksi_pembayaran->tanggal_pembayaran)->format('d F Y H:i:s') : ' - ' }}</td>
                 <td>
                   @if ($trans->status_transaksi == 2)
                       <span class="btn btn-danger">Cancel</span>

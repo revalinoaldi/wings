@@ -29,7 +29,7 @@
             <div class="col-md-6">
                 <div class="box-checkout">
                     <h3 class="title">Checkout</h3>
-                    
+
                     <div class="billing-fields">
                         <div class="fields-content">
                             <div class="field-row">
@@ -44,12 +44,12 @@
                                 <label for="no_telp">No Telp. *</label>
                                 <input type="number" id="no_telp" name="no_telp" required value="0{{ $order->no_telp }}" readonly>
                             </div>
-                            
+
                             <div class="field-row">
                                 <label for="total">Grand Total *</label>
                                 <input type="text" id="total" name="total" required value="{{ number_format($order->total_transaksi, 0, ',', '.') }}" readonly>
                             </div>
-                            
+
                             <div class="field-row">
                                 <label for="alamat">Alamat *</label>
                                 <textarea id="alamat" name="alamat" required readonly>{{ $order->alamat }}</textarea>
@@ -57,16 +57,16 @@
                             <div class="clearfix"></div>
                         </div><!-- /.fields-content -->
                     </div><!-- /.billing-fields -->
-                    
+
                 </div><!-- /.box-checkout -->
             </div><!-- /.col-md-7 -->
-            
+
             <div class="col-md-6">
                 <form action="/paid-order/{{ $order->kode_transaksi }}" method="POST" enctype="multipart/form-data">
                     @method('put')
                     @csrf
                     <div class="cart-totals style2">
-                        <h3>Paid Your Order</h3>    
+                        <h3>Paid Your Order</h3>
                         <div class="fields-content">
                             <div class="field-row">
                                 <label for="jumlah_pembayaran">Jumlah Bayar *</label>
@@ -82,8 +82,8 @@
                                 </div>
                                 @enderror
                             </div>
-                        </div>     
-                        
+                        </div>
+
                         <div class="btn-radio style2">
                             @foreach ($rekening as $atm)
                             <div class="radio-info">
@@ -97,7 +97,7 @@
                                 {{ $message }}
                             </div>
                             @enderror
-                        </div><!-- /.btn-radio style2 -->      
+                        </div><!-- /.btn-radio style2 -->
                         <div class="fields-content">
                             <div class="field-row">
                                 <label for="bukti_pembayaran">Bukti Bayar *</label>
@@ -118,7 +118,7 @@
                     </div><!-- /.cart-totals style2 -->
                 </form>
             </div><!-- /.col-md-5 -->
-            
+
         </div><!-- /.row -->
     </div><!-- /.container -->
 </section><!-- /.flat-checkout -->
@@ -189,7 +189,7 @@
             URL.revokeObjectURL(avatar.src) // free memory
         }
     };
-    
+
     const checking = document.querySelector('#anotherSend');
     const anotherAddress = document.querySelector('#anotherAddress');
     checking.addEventListener('change', (event) => {
